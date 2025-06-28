@@ -13,7 +13,9 @@ disk_total=$(df -BG / | awk 'NR==2 {gsub("G", "", $2); print $2}')
 disk_used=$(df -m / | awk 'NR==2 {print $3}')
 disk_percent=$(df / | awk 'NR==2 {print $5}')
 
-cpu_percent=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}' | awk '{printf("%.1f", $1)}')
+cpul=$(vmstat 1 2 | tail -1 | awk '{printf $15}')
+cpu_op=$(expr 100 - $cpul)
+cpu_fin=$(printf "%.1f" $cpu_op)
 
 last_reboot=$(who -b | awk '{print $3, $4}')
 
